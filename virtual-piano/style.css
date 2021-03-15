@@ -181,6 +181,10 @@ body {
 	color: #00b4a4;
 }
 
+audio, .audio-btn {
+	display: none;
+}
+
 .fullscreen {
 	position: fixed;
 	top: 120px;
