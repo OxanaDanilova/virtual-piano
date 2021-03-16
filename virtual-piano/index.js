@@ -26,6 +26,24 @@ const app = () => {
         };
     }
 
+    const makeKeyActive = (event)=> {
+      let target = event.target;
+      if (target.classList.contains('piano-key')) {
+        target.classList.add('piano-key-active');
+        target.classList.add('piano-key-active-pseudo');
+      }
+
+    }
+
+    const makeKeyNotActive = (event) => {
+      let target = event.target;
+      if (target.classList.contains('piano-key-active')) {
+          target.classList.remove('piano-key-active');
+          target.classList.remove('piano-key-active-pseudo');
+      }
+
+    }
+
     const playAudio = (src) => {
         const audio = new Audio();
         audio.currentTime = 0;
@@ -44,7 +62,7 @@ const app = () => {
             }
         }
 
-        const handleKey = (event) => {
+        const defineKey = (event) => {
           let fileName;
           switch (event.code) {
             case 'KeyD': fileName = 'c';
@@ -74,19 +92,45 @@ const app = () => {
             default: break;
 
           }
-        if (fileName) {
+          if (fileName) return fileName;
+        }
+
+        const handleKey = (event) => {
+          let fileName = defineKey(event);
+          if (fileName) {             
+          Object.values(pianoKeys).forEach((item) => {
+            if (item.dataset.note === fileName) {
+              item.classList.add('piano-key-active');
+              item.classList.add('piano-key-active-pseudo');            
+            }
+          });
             console.log('note', fileName);
             let src = `./assets/audio/${fileName}.mp3`;
-            console.log(src);
             playAudio(src); 
           }                   
         }
+
+        const handleKeyUp = (event)=> { 
+          let fileName = defineKey(event);
+          if (fileName) {
+            Object.values(pianoKeys).forEach((item) => {
+              if (item.dataset.note === fileName) {
+                item.classList.remove('piano-key-active');
+                item.classList.remove('piano-key-active-pseudo');            
+              }
+          });
+        }
+
+          }
+      
       
     piano.addEventListener('click', handlePiano);   
+    piano.addEventListener('mousedown', makeKeyActive);
+    piano.addEventListener('mouseup', makeKeyNotActive);
     window.addEventListener('keydown', handleKey);
+    window.addEventListener('keyup', handleKeyUp);
     lettersBtn.addEventListener('click', showLetters );
     notesBtn.addEventListener('click', showNotes);
-
 
 }
 
