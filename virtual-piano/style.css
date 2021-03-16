@@ -142,6 +142,7 @@ body {
 	left: 20px;
 	transition: 0.3s;
 }
+
 .piano-key::after {
 	display: none;
 	content: attr(data-letter);
@@ -179,10 +180,6 @@ body {
 .piano-key-active::after,
 .piano-key-active::before {
 	color: #00b4a4;
-}
-
-audio, .audio-btn {
-	display: none;
 }
 
 .fullscreen {

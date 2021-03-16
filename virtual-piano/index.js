@@ -1,6 +1,31 @@
 const app = () => {
     const piano = document.getElementsByClassName('piano')[0];
-          
+    const pianoKeys = document.getElementsByClassName('piano-key');
+    const lettersBtn = document.getElementsByClassName('btn-letters')[0];
+    const notesBtn = document.getElementsByClassName('btn-notes')[0];
+    
+    const showLetters = (event) => {
+      let target = event.target;
+      if (target === lettersBtn) {
+        target.classList.add('btn-active');
+        notesBtn.classList.remove('btn-active');
+        Object.values(pianoKeys).forEach((item)=> {
+          item.classList.add('letter');
+          });       
+    };
+  }
+
+    const showNotes = (event) => {
+      let target = event.target;
+      if (target === notesBtn) {
+        target.classList.add('btn-active');
+        lettersBtn.classList.remove('btn-active');
+        Object.values(pianoKeys).forEach((item)=> {
+          item.classList.remove('letter');
+          }); 
+        };
+    }
+
     const playAudio = (src) => {
         const audio = new Audio();
         audio.currentTime = 0;
@@ -59,6 +84,10 @@ const app = () => {
       
     piano.addEventListener('click', handlePiano);   
     window.addEventListener('keydown', handleKey);
+    lettersBtn.addEventListener('click', showLetters );
+    notesBtn.addEventListener('click', showNotes);
+
+
 }
 
 app();
