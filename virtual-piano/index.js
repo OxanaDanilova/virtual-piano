@@ -3,6 +3,7 @@ const app = () => {
     const pianoKeys = document.getElementsByClassName('piano-key');
     const lettersBtn = document.getElementsByClassName('btn-letters')[0];
     const notesBtn = document.getElementsByClassName('btn-notes')[0];
+    let isMouseDown = false;
     
     const showLetters = (event) => {
       let target = event.target;
@@ -26,13 +27,26 @@ const app = () => {
         };
     }
 
-    const makeKeyActive = (event)=> {
-      let target = event.target;
-      if (target.classList.contains('piano-key')) {
-        target.classList.add('piano-key-active');
-        target.classList.add('piano-key-active-pseudo');
-      }
+    const handleMouseDown = (event)=> {
+      isMouseDown = true;
+      makeKeyActive(event);
+    }
 
+    const handleMouseUp = (event) => {
+      isMouseDown = false;
+      makeKeyNotActive(event);
+    }
+
+
+    const makeKeyActive = (event)=> {
+      if (isMouseDown) {
+        let target = event.target;
+        if (target.classList.contains('piano-key')) {
+          target.classList.add('piano-key-active');
+          target.classList.add('piano-key-active-pseudo');
+        }
+      }
+    
     }
 
     const makeKeyNotActive = (event) => {
@@ -52,14 +66,15 @@ const app = () => {
       }
 
     const handlePiano = (event) => {
+      if (event.type === 'mousedown' || isMouseDown && event.target!==event.relatedtarget) {
         let target = event.target;     
         if (target.classList.contains('piano-key')) {
-          console.log(target.dataset.note);
           let fileName = target.dataset.note;
           let src = `./assets/audio/${fileName}.mp3`;
           console.log(src);
           playAudio(src);
             }
+      }   
         }
 
         const defineKey = (event) => {
@@ -107,7 +122,7 @@ const app = () => {
             console.log('note', fileName);
             let src = `./assets/audio/${fileName}.mp3`;
             playAudio(src); 
-          }                   
+          }                    
         }
 
         const handleKeyUp = (event)=> { 
@@ -124,9 +139,12 @@ const app = () => {
           }
       
       
-    piano.addEventListener('click', handlePiano);   
-    piano.addEventListener('mousedown', makeKeyActive);
-    piano.addEventListener('mouseup', makeKeyNotActive);
+    piano.addEventListener('mousedown', handlePiano);  
+    piano.addEventListener('mousedown', handleMouseDown);
+    piano.addEventListener('mouseup', handleMouseUp);
+    piano.addEventListener('mouseover', handlePiano ); 
+    piano.addEventListener('mouseover', makeKeyActive ); 
+    piano.addEventListener('mouseout', makeKeyNotActive);
     window.addEventListener('keydown', handleKey);
     window.addEventListener('keyup', handleKeyUp);
     lettersBtn.addEventListener('click', showLetters );
