@@ -5,6 +5,7 @@ const app = () => {
     const notesBtn = document.getElementsByClassName('btn-notes')[0];
     const fullScrBtn = document.querySelector('.fullscreen');
     let isMouseDown = false;
+    const clickedNote = [];
     
     const showLetters = (event) => {
       let target = event.target;
@@ -70,7 +71,7 @@ const app = () => {
       if (event.type === 'mousedown' || isMouseDown && event.target!==event.relatedtarget) {
         let target = event.target;     
         if (target.classList.contains('piano-key')) {
-          let fileName = target.dataset.note;
+          let fileName = target.dataset.note;          
           let src = `./assets/audio/${fileName}.mp3`;
           console.log(src);
           playAudio(src);
@@ -120,10 +121,14 @@ const app = () => {
               item.classList.add('piano-key-active-pseudo');            
             }
           });
+
+          if (!clickedNote.indexOf(fileName)){
             console.log('note', fileName);
             let src = `./assets/audio/${fileName}.mp3`;
             playAudio(src); 
-          }                    
+            clickedNote.push(fileName);
+            }            
+          } 
         }
 
         const handleKeyUp = (event)=> { 
@@ -134,10 +139,13 @@ const app = () => {
                 item.classList.remove('piano-key-active');
                 item.classList.remove('piano-key-active-pseudo');            
               }
+              if (clickedNote.indexOf(fileName)){
+                let index = clickedNote.indexOf(fileName);
+                clickedNote.splice(index,1);
+              }
           });
         }
-
-          }
+      }
 
           const makeFullScreen = (event) => {
             if (event.target.classList.contains('openfullscreen')) {
