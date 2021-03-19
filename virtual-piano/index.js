@@ -70,9 +70,6 @@ const app = () => {
       if (event.type === 'mousedown' || isMouseDown && event.target!==event.relatedtarget) {
         let target = event.target;     
         if (target.classList.contains('piano-key')) {
-         /*  console.log('content', window.getComputedStyle(target, ':before'));*/
-          console.log('target', target); 
-          event.stopPropagation();
           let fileName = target.dataset.note;
           let src = `./assets/audio/${fileName}.mp3`;
           console.log(src);
