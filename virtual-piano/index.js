@@ -73,7 +73,6 @@ const app = () => {
         if (target.classList.contains('piano-key')) {
           let fileName = target.dataset.note;          
           let src = `./assets/audio/${fileName}.mp3`;
-          console.log(src);
           playAudio(src);
             }
       }   
@@ -119,11 +118,10 @@ const app = () => {
             if (item.dataset.note === fileName) {
               item.classList.add('piano-key-active');
               item.classList.add('piano-key-active-pseudo');            
-            }
+            }            
           });
 
-          if (!clickedNote.indexOf(fileName)){
-            console.log('note', fileName);
+          if (clickedNote.indexOf(fileName)<0){
             let src = `./assets/audio/${fileName}.mp3`;
             playAudio(src); 
             clickedNote.push(fileName);
@@ -139,7 +137,7 @@ const app = () => {
                 item.classList.remove('piano-key-active');
                 item.classList.remove('piano-key-active-pseudo');            
               }
-              if (clickedNote.indexOf(fileName)){
+              if (clickedNote.indexOf(fileName)>=0){
                 let index = clickedNote.indexOf(fileName);
                 clickedNote.splice(index,1);
               }
@@ -175,6 +173,7 @@ const app = () => {
     piano.addEventListener('mouseout', makeKeyNotActive);
     window.addEventListener('keydown', handleKey);
     window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('mouseup', handleMouseUp);
     lettersBtn.addEventListener('click', showLetters );
     notesBtn.addEventListener('click', showNotes);
     fullScrBtn.addEventListener('click', makeFullScreen);
